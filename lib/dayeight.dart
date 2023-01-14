@@ -23,10 +23,6 @@ decypher() {
 
   int currentRow = 1;
   int currentColumn = 1;
-  int fromTop = currentRow - 1;
-  int fromBottom = grid.length - currentRow;
-  int fromLeft = currentColumn - 1;
-  int fromRight = grid[0].length - 1;
 
   bool isVisible = false;
 
@@ -42,7 +38,7 @@ decypher() {
     for (int i = currentRow - 1; i >= 0; i--) {
       print('current Row minus 1 in from top: ${currentRow - 1}');
       print(
-          'current evaluated item:  row: $i column: $currentColumn  specific value: ${grid[i][currentColumn]} from top: $fromTop');
+          'current evaluated item:  row: $i column: $currentColumn  specific value: ${grid[i][currentColumn]}');
       print(
           'comparison item: current row: $currentRow  column: $currentColumn specific value: ${grid[currentRow][currentColumn]}');
       if (grid[currentRow][currentColumn] <= grid[i][currentColumn]) {
@@ -63,6 +59,57 @@ decypher() {
     }
   }
 
+  isVisibleFromBottom() {
+    for (int i = currentRow + 1; i >= lines.length - 1; i--) {
+      print('current Row plus 1: ${currentRow + 1}');
+      print(
+          'current evaluated item:  row: $i column: $currentColumn  specific value: ${grid[i][currentColumn]}');
+      print(
+          'comparison item: current row: $currentRow  column: $currentColumn specific value: ${grid[currentRow][currentColumn]}');
+      if (grid[currentRow][currentColumn] <= grid[i][currentColumn]) {
+        print('will not be visible');
+        isVisible = false;
+        break;
+      }
+      if (grid[currentRow][currentColumn] > grid[i][currentColumn]) {
+        isVisible = true;
+
+        print('is visible at row $currentRow, column $currentColumn');
+      }
+    }
+    if (isVisible == true) {
+      print('incrementing total visible');
+      totalVisible = totalVisible + 1;
+      isVisible == false;
+    }
+  }
+
+  isVisibleFromRight() {
+    for (int i = grid[0].length - 1; i >= currentColumn + 1; i--) {
+      print('current Column plus 1: ${currentColumn + 1}');
+      print(
+          'current evaluated item:  row: $currentRow column: $i specific value: ${grid[currentRow][i]}');
+      print(
+          'comparison item: current row: $currentRow  column: $currentColumn specific value: ${grid[currentRow][currentColumn]}');
+      if (grid[currentRow][currentColumn] <= grid[currentRow][i]) {
+        print('will not be visible');
+        isVisible = false;
+        break;
+      }
+      if (grid[currentRow][currentColumn] > grid[currentRow][i]) {
+        isVisible = true;
+
+        print('is visible at row $currentRow, column $currentColumn');
+      }
+    }
+    if (isVisible == true) {
+      print(
+          '${grid[currentRow][currentColumn]} is visible from right.  incrementing total visible');
+      totalVisible = totalVisible + 1;
+      isVisible == false;
+    }
+  }
+
   for (int row = 1; row < lines.length - 1; row++) {
     currentRow = row;
     // print('row $row: ${lines[row]}');
@@ -71,7 +118,10 @@ decypher() {
       currentColumn = column;
       print('column $column');
       print('current row minus 1:  ${currentRow - 1}');
-      isVisibleFromTop();
+      print('grid lenth: ${grid[0].length}');
+      // isVisibleFromTop();
+      // isVisibleFromBottom();
+      isVisibleFromRight();
     }
   }
 //function to choose place in list to compare
