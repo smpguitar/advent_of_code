@@ -20,7 +20,6 @@ decypher() {
   String rootDirectory = '/';
   String previousDirectory = '..';
   String directoryLabel = 'dir';
-  int total = 0;
 
   //parse the commands
   for (String line in data) {
@@ -73,9 +72,7 @@ decypher() {
 
   //answers total file sizes under size limit
   for (int size in directorySizes.values) {
-    if (size <= sizeLimit) {
-      total += size;
-    }
+    if (size <= sizeLimit) {}
   }
 
 //find the smallest file
