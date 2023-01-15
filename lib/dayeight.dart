@@ -60,19 +60,19 @@ decypher() {
   }
 
   isVisibleFromBottom() {
-    for (int i = lines.length; i > currentRow + 1; i--) {
+    for (int i = currentRow + 1; i <= lines.length - 1; i++) {
       print('isVisibleFromBottom');
       print('current Row plus 1: ${currentRow + 1}');
       print(
-          'current evaluated item:  row: $i column: $currentColumn  specific value: ${grid[i - 1][currentColumn]}');
+          'current evaluated item:  row: $i column: $currentColumn  specific value: ${grid[i][currentColumn]}');
       print(
           'comparison item: current row: $currentRow  column: $currentColumn specific value: ${grid[currentRow][currentColumn]}');
-      if (grid[currentRow][currentColumn] <= grid[i - 1][currentColumn]) {
+      if (grid[currentRow][currentColumn] <= grid[i][currentColumn]) {
         print('will not be visible');
         isVisible = false;
         break;
       }
-      if (grid[currentRow][currentColumn] > grid[i - 1][currentColumn]) {
+      if (grid[currentRow][currentColumn] > grid[i][currentColumn]) {
         isVisible = true;
 
         print('is visible at row $currentRow, column $currentColumn');
@@ -87,7 +87,7 @@ decypher() {
   }
 
   isVisibleFromRight() {
-    for (int i = grid[0].length - 1; i >= currentColumn + 1; i--) {
+    for (int i = currentColumn + 1; i <= grid[0].length - 1; i++) {
       print('isVisibleFromRight');
       print('current Column plus 1: ${currentColumn + 1}');
       print(
@@ -115,9 +115,9 @@ decypher() {
   }
 
   isVisibleFromLeft() {
-    for (int i = 0; i <= currentColumn - 1; i++) {
+    for (int i = currentColumn - 1; i >= 0; i--) {
       print('isVisibleFromLeft');
-      print('current Column minus 1: ${currentColumn - 1}');
+      print('current Column minus 1: $i');
       print(
           'current evaluated item:  row: $currentRow column: $i specific value: ${grid[currentRow][i]}');
       print(
@@ -135,7 +135,7 @@ decypher() {
     }
     if (isVisible == true) {
       print(
-          '${grid[currentRow][currentColumn]} is visible from right.  incrementing total visible');
+          '${grid[currentRow][currentColumn]} is visible from left.  incrementing total visible');
       amIncrementing = true;
       totalVisible = totalVisible + 1;
       isVisible == false;
