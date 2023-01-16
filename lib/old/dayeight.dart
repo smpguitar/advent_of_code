@@ -30,9 +30,17 @@ decypher() {
   int totalVisible = 0;
   int additionalVisible = (grid.length * 2) + (lines.length * 2) - 4;
 
+  int topScore = 0;
+  int bottomScore = 0;
+  int rightScore = 0;
+  int leftScore = 0;
+
+  int maxScore = 0;
+
   // create 4 functions isVisibleFromTop/Bottom/Left;Right
 
   isVisibleFromTop() {
+    int treeDistance = 0;
     for (int i = currentRow - 1; i >= 0; i--) {
       print('isVisibleFromTop');
       print('current Row minus 1 in from top: ${currentRow - 1}');
@@ -43,11 +51,17 @@ decypher() {
       if (grid[currentRow][currentColumn] <= grid[i][currentColumn]) {
         print('will not be visible');
         isVisible = false;
+        treeDistance = treeDistance + 1;
+        print('top tree distance: $treeDistance');
+        topScore = treeDistance;
+
         break;
       }
       if (grid[currentRow][currentColumn] > grid[i][currentColumn]) {
         isVisible = true;
-
+        treeDistance = treeDistance + 1;
+        topScore = treeDistance;
+        print('top tree distance: $treeDistance');
         print('is visible at row $currentRow, column $currentColumn');
       }
     }
@@ -55,11 +69,13 @@ decypher() {
       print('incrementing total visible');
       amIncrementing = true;
       totalVisible = totalVisible + 1;
+      print('tree distance: $treeDistance');
       isVisible == false;
     }
   }
 
   isVisibleFromBottom() {
+    int treeDistance = 0;
     for (int i = currentRow + 1; i <= lines.length - 1; i++) {
       print('isVisibleFromBottom');
       print('current Row plus 1: ${currentRow + 1}');
@@ -70,11 +86,16 @@ decypher() {
       if (grid[currentRow][currentColumn] <= grid[i][currentColumn]) {
         print('will not be visible');
         isVisible = false;
+        treeDistance = treeDistance + 1;
+        print('bottom tree distance: $treeDistance');
+        bottomScore = treeDistance;
         break;
       }
       if (grid[currentRow][currentColumn] > grid[i][currentColumn]) {
         isVisible = true;
-
+        treeDistance = treeDistance + 1;
+        bottomScore = treeDistance;
+        print('bottom tree distance: $treeDistance');
         print('is visible at row $currentRow, column $currentColumn');
       }
     }
@@ -82,11 +103,13 @@ decypher() {
       print('incrementing total visible');
       amIncrementing = true;
       totalVisible = totalVisible + 1;
+      print('bottom tree distance: $treeDistance');
       isVisible == false;
     }
   }
 
   isVisibleFromRight() {
+    int treeDistance = 0;
     for (int i = currentColumn + 1; i <= grid[0].length - 1; i++) {
       print('isVisibleFromRight');
       print('current Column plus 1: ${currentColumn + 1}');
@@ -96,12 +119,17 @@ decypher() {
           'comparison item: current row: $currentRow  column: $currentColumn specific value: ${grid[currentRow][currentColumn]}');
       if (grid[currentRow][currentColumn] <= grid[currentRow][i]) {
         print('will not be visible');
+        treeDistance = treeDistance + 1;
+        rightScore = treeDistance;
+        print('right tree distance: $treeDistance');
         isVisible = false;
         break;
       }
       if (grid[currentRow][currentColumn] > grid[currentRow][i]) {
         isVisible = true;
-
+        treeDistance = treeDistance + 1;
+        rightScore = treeDistance;
+        print('right tree distance: $treeDistance');
         print('is visible at row $currentRow, column $currentColumn');
       }
     }
@@ -110,11 +138,13 @@ decypher() {
           '${grid[currentRow][currentColumn]} is visible from right.  incrementing total visible');
       amIncrementing = true;
       totalVisible = totalVisible + 1;
+      print('right tree distance: $treeDistance');
       isVisible == false;
     }
   }
 
   isVisibleFromLeft() {
+    int treeDistance = 0;
     for (int i = currentColumn - 1; i >= 0; i--) {
       print('isVisibleFromLeft');
       print('current Column minus 1: $i');
@@ -124,12 +154,17 @@ decypher() {
           'comparison item: current row: $currentRow  column: $currentColumn specific value: ${grid[currentRow][currentColumn]}');
       if (grid[currentRow][currentColumn] <= grid[currentRow][i]) {
         print('will not be visible');
+        treeDistance = treeDistance + 1;
+        leftScore = treeDistance;
+        print('left tree distance: $treeDistance');
         isVisible = false;
         break;
       }
       if (grid[currentRow][currentColumn] > grid[currentRow][i]) {
         isVisible = true;
-
+        treeDistance = treeDistance + 1;
+        leftScore = treeDistance;
+        print('left tree distance: $treeDistance');
         print('is visible at row $currentRow, column $currentColumn');
       }
     }
@@ -138,6 +173,7 @@ decypher() {
           '${grid[currentRow][currentColumn]} is visible from left.  incrementing total visible');
       amIncrementing = true;
       totalVisible = totalVisible + 1;
+      print('left tree distance: $treeDistance');
       isVisible == false;
     }
   }
@@ -152,17 +188,31 @@ decypher() {
       print('column $column');
       print('current row minus 1:  ${currentRow - 1}');
       print('grid lenth: ${grid[0].length}');
-      if (amIncrementing == false) {
-        isVisibleFromTop();
-      }
-      if (amIncrementing == false) {
-        isVisibleFromBottom();
-      }
-      if (amIncrementing == false) {
-        isVisibleFromRight();
-      }
-      if (amIncrementing == false) {
-        isVisibleFromLeft();
+
+      topScore = 0;
+      bottomScore = 0;
+      rightScore = 0;
+      leftScore = 0;
+
+      // if (amIncrementing == false) {
+      //   isVisibleFromTop();
+      // }
+      // if (amIncrementing == false) {
+      //   isVisibleFromBottom();
+      // }
+      // if (amIncrementing == false) {
+      //   isVisibleFromRight();
+      // }
+      // if (amIncrementing == false) {
+      //   isVisibleFromLeft();
+      // }
+
+      isVisibleFromTop();
+      isVisibleFromBottom();
+      isVisibleFromRight();
+      isVisibleFromLeft();
+      if (topScore * bottomScore * rightScore * leftScore > maxScore) {
+        maxScore = topScore * bottomScore * rightScore * leftScore;
       }
     }
   }
@@ -171,5 +221,7 @@ decypher() {
   print('inner visible = $totalVisible');
   print('outer visible = $additionalVisible');
   print('total visible = ${additionalVisible + totalVisible}');
+  print('Max Score: $maxScore');
+
 //compare values if > add to visible
 }
