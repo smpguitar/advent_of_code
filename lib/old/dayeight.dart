@@ -25,7 +25,6 @@ decypher() {
   int currentColumn = 1;
 
   bool isVisible = false;
-  bool amIncrementing = false;
 
   int totalVisible = 0;
   int additionalVisible = (grid.length * 2) + (lines.length * 2) - 4;
@@ -67,7 +66,6 @@ decypher() {
     }
     if (isVisible == true) {
       print('incrementing total visible');
-      amIncrementing = true;
       totalVisible = totalVisible + 1;
       print('tree distance: $treeDistance');
       isVisible == false;
@@ -101,7 +99,6 @@ decypher() {
     }
     if (isVisible == true) {
       print('incrementing total visible');
-      amIncrementing = true;
       totalVisible = totalVisible + 1;
       print('bottom tree distance: $treeDistance');
       isVisible == false;
@@ -136,7 +133,6 @@ decypher() {
     if (isVisible == true) {
       print(
           '${grid[currentRow][currentColumn]} is visible from right.  incrementing total visible');
-      amIncrementing = true;
       totalVisible = totalVisible + 1;
       print('right tree distance: $treeDistance');
       isVisible == false;
@@ -171,7 +167,6 @@ decypher() {
     if (isVisible == true) {
       print(
           '${grid[currentRow][currentColumn]} is visible from left.  incrementing total visible');
-      amIncrementing = true;
       totalVisible = totalVisible + 1;
       print('left tree distance: $treeDistance');
       isVisible == false;
@@ -183,7 +178,6 @@ decypher() {
     // print('row $row: ${lines[row]}');
 
     for (int column = 1; column < grid[0].length - 1; column++) {
-      amIncrementing = false;
       currentColumn = column;
       print('column $column');
       print('current row minus 1:  ${currentRow - 1}');
