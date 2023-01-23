@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 decypher() {
@@ -10,93 +9,71 @@ decypher() {
 
   // Split the text into lines in a list
   LineSplitter ls = const LineSplitter();
-
   List<String> lines = ls.convert(text);
-  print(lines);
-
-  int tailMoves = 0;
-
   List<List<String>> moves =
-      lines.map((row) => row.split("").toList()).toList();
+      lines.map((row) => row.split(" ").toList()).toList();
 
-  print(moves);
-  print('moves length: ${moves.length}');
+//create variables
+  List<Set> visitedLocations = [];
 
-  for (int i = 0; i < moves.length - 1; i++) {
-    String direction = '';
-    int distance = 0;
-    String direction1 = '';
-    int distance1 = 0;
-    String direction2 = '';
-    int distance2 = 0;
-    String direction3 = '';
-    int distance3 = 0;
-    bool opposite = false;
+  var head = [0, 0];
+  var tail = [0, 0];
 
-    isOpposite() {
-      if (direction == 'R' && direction2 == 'L' ||
-          direction == 'L' && direction2 == 'R' ||
-          direction == 'U' && direction2 == 'D' ||
-          direction == 'D' && direction2 == 'U') {
-        opposite == true;
+//parse every move
+  for (int i = 0; i <= moves.length - 1; i++) {
+    //set varable values
+    String x = moves[i][0];
+    int y = int.parse(moves[i][1]);
+    print('move is: ${moves[i][0]}, ${moves[i][1]}');
+    // for each move iterate for value y
+    for (int j = 0; j < y; j++) {
+      int dx = 0;
+      int dy = 0;
+      if (x == 'R') {
+        dx = 1;
       }
-    }
+      if (x == 'L') {
+        dx = -1;
+      }
+      if (x == 'U') {
+        dy = 1;
+      }
+      if (x == 'D') {
+        dy = -1;
+      }
 
-    if (i < 2) {
-      direction1 = moves[i][0];
-      distance1 = int.parse(moves[i][2]);
-      tailMoves = distance1 - 1;
-      // print('direction1: $direction1 distance: $distance1');
-      print('distance = $distance');
-      print('distance 1 = $distance1');
-      print('distance 2 = $distance2');
-    }
-    if (i >= 2) {
-      //two prior moves
-      direction = moves[i - 2][0];
-      distance = int.parse(moves[i - 2][2]);
-      //prior move
-      direction1 = moves[i - 1][0];
-      distance1 = int.parse(moves[i - 1][2]);
-      //current move
-      direction2 = moves[i][0];
-      distance2 = int.parse(moves[i][2]);
-      //future move -- really only need to know if doubling back
-      // direction3 = moves[i + 1][0];
-      // distance3 = int.parse(moves[i + 1][2]);
-      print('distance = $distance');
-      print('distance 1 = $distance1');
-      print('distance 2 = $distance2');
-      if (distance1 == 1) {
-        isOpposite();
-        if (opposite == true && distance2 > 2) {
-          tailMoves = tailMoves + distance2 - 2;
-          print(opposite);
-          opposite = false;
+      print(head);
+      head[0] += dx;
+      head[1] += dy;
+      print('round $j');
+      var _x = head[0] - tail[0];
+      var _y = head[1] - tail[1];
+
+//check if distance between head an tail is more than 1
+      if (_x.abs() > 1 || _y.abs() > 1) {
+        if (_x == 0) {
+          tail[1] += _y ~/ 2;
+        } else if (_y == 0) {
+          tail[0] += _x ~/ 2;
         } else {
-          // no change to tailmoves
+          if (_x > 0) {
+            tail[0] += 1;
+          }
+          if (_x < 0) {
+            tail[0] += -1;
+          }
+          if (_y > 0) {
+            tail[1] += 1;
+          }
+          if (_y < 0) {
+            tail[1] += -1;
+          }
         }
+        visitedLocations.add({tail[0], tail[1]});
+        print('tail is at: ${tail[0]}, ${tail[1]}');
       }
     }
-    if (distance2 > 1) {
-      isOpposite();
-      if (opposite == true && distance2 > 2) {
-        tailMoves = tailMoves + distance2 - 2;
-        print(opposite);
-        opposite = false;
-      } else {
-        // no change to tailmoves
-      }
-      if (opposite == false) {
-        tailMoves = tailMoves + distance2 - 1;
-        print('direction2: $direction2, distance2: $distance2');
-        print('opposite = $opposite');
-      }
-    }
-    // if it comes back on itself
-
-    print('direction2: $direction2 distance: $distance2');
-
-    print(tailMoves);
   }
+  print('moves lenth is: ${moves.length}');
+  print(visitedLocations.length);
 }
