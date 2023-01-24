@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:tuple/tuple.dart';
 
 decypher() {
 //get input
   String text = File(
-          '/Users/stephenparks/Development/advent_of_code/advent_of_code/bin/daynine_test_data.txt')
+          '/Users/stephenparks/Development/advent_of_code/advent_of_code/bin/daynine_data.txt')
       .readAsStringSync();
 
   // Split the text into lines in a list
@@ -14,7 +15,7 @@ decypher() {
       lines.map((row) => row.split(" ").toList()).toList();
 
 //create variables
-  List<Set> visitedLocations = [];
+  Set<Tuple2<int, int>> visitedLocations = {Tuple2(0, 0)};
 
   var head = [0, 0];
   var tail = [0, 0];
@@ -27,22 +28,17 @@ decypher() {
     print('move is: ${moves[i][0]}, ${moves[i][1]}');
     // for each move iterate for value y
     for (int j = 0; j < y; j++) {
-      int dx = 0;
-      int dy = 0;
-      if (x == 'R') {
-        dx = 1;
-      }
-      if (x == 'L') {
-        dx = -1;
-      }
-      if (x == 'U') {
-        dy = 1;
-      }
-      if (x == 'D') {
-        dy = -1;
-      }
+      int dx = (x == 'R')
+          ? 1
+          : (x == 'L')
+              ? -1
+              : 0;
+      int dy = (x == 'U')
+          ? 1
+          : (x == 'D')
+              ? -1
+              : 0;
 
-      print(head);
       head[0] += dx;
       head[1] += dy;
       print('round $j');
@@ -56,24 +52,14 @@ decypher() {
         } else if (_y == 0) {
           tail[0] += _x ~/ 2;
         } else {
-          if (_x > 0) {
-            tail[0] += 1;
-          }
-          if (_x < 0) {
-            tail[0] += -1;
-          }
-          if (_y > 0) {
-            tail[1] += 1;
-          }
-          if (_y < 0) {
-            tail[1] += -1;
-          }
+          tail[0] += _x > 0 ? 1 : -1;
+          tail[1] += _y > 0 ? 1 : -1;
         }
-        visitedLocations.add({tail[0], tail[1]});
+        visitedLocations.add(Tuple2(tail[0], tail[1]));
         print('tail is at: ${tail[0]}, ${tail[1]}');
       }
     }
   }
-  print('moves lenth is: ${moves.length}');
+  print('tail visited: $visitedLocations');
   print(visitedLocations.length);
 }
