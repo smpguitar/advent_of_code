@@ -14,11 +14,13 @@ decypher() {
   List<List<String>> moves =
       lines.map((row) => row.split(" ").toList()).toList();
 
-//create variables
-  Set<Tuple2<int, int>> visitedLocations = {Tuple2(0, 0)};
+//create variablesß
+  List<List<int>> r = List.generate(10, (_) => [0, 0]);
 
-  var head = [0, 0];
-  var tail = [0, 0];
+  // print(r);
+  Set<Tuple2<int, int>> visitedLocations = {Tuple2(0, 0)};
+  // var head = [0, 0];
+  // var tail = [0, 0];
 
 //parse every move
   for (int i = 0; i <= moves.length - 1; i++) {
@@ -39,23 +41,29 @@ decypher() {
               ? -1
               : 0;
 
-      head[0] += dx;
-      head[1] += dy;
+      r[0][0] += dx;
+      r[0][1] += dy;
       print('round $j');
-      var _x = head[0] - tail[0];
-      var _y = head[1] - tail[1];
+
+      for (int k = 0; k < 9; k++) {
+        var head = r[k];
+        var tail = r[k + 1];
+        var _x = head[0] - tail[0];
+        var _y = head[1] - tail[1];
 
 //check if distance between head an tail is more than 1
-      if (_x.abs() > 1 || _y.abs() > 1) {
-        if (_x == 0) {
-          tail[1] += _y ~/ 2;
-        } else if (_y == 0) {
-          tail[0] += _x ~/ 2;
-        } else {
-          tail[0] += _x > 0 ? 1 : -1;
-          tail[1] += _y > 0 ? 1 : -1;
+        if (_x.abs() > 1 || _y.abs() > 1) {
+          if (_x == 0) {
+            tail[1] += _y ~/ 2;
+          } else if (_y == 0) {
+            tail[0] += _x ~/ 2;
+          } else {
+            tail[0] += _x > 0 ? 1 : -1;
+            tail[1] += _y > 0 ? 1 : -1;
+          }
         }
-        visitedLocations.add(Tuple2(tail[0], tail[1]));
+
+        visitedLocations.add((Tuple2(r[9][0], r[9][1])));
         print('tail is at: ${tail[0]}, ${tail[1]}');
       }
     }
