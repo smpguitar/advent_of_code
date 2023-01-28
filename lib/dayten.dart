@@ -24,7 +24,6 @@ decypher() {
   void checkCycles() {
     if (cycles / logLevel == 1) {
       logSignalStrength();
-      print('x: $currentValue strength: $signalStrengths at cycles: $cycles');
       logLevel = logLevel + 40;
     }
   }
@@ -41,10 +40,8 @@ decypher() {
       checkCycles();
       cycles = cycles + 1;
       checkCycles();
-      print('add ${moves[i][1]}');
       currentValue = currentValue + int.parse(moves[i][1]);
     }
-    print('currentValue: $currentValue and cycles: $cycles');
   }
   int result = signalStrengths.fold(0, (k, l) => k + l);
   print(result);
