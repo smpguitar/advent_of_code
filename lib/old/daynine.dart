@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:tuple/tuple.dart';
