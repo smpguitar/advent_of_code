@@ -68,6 +68,7 @@ decypher() {
     monkies.add(monkeyModel);
   }
 
+  // ignore: unused_element
   removeUsedValues(monkey, number) {
     monkies[monkey].items.removeRange(0, number);
   }

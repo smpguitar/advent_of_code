@@ -4,7 +4,7 @@ import 'dart:math';
 decypher() {
 //get input
   String text = File(
-          '/Users/stephenparks/Development/advent_of_code/advent_of_code/bin/dayeleven_test_data.txt')
+          '/Users/stephenparks/Development/advent_of_code/advent_of_code/bin/dayeleven_data.txt')
       .readAsStringSync();
 
   // Split the text into lines in a list
@@ -12,7 +12,8 @@ decypher() {
   List<String> lines = text.split(RegExp("\n\n"));
   List<List<String>> monkeyHold = [];
   List<MonkeyModel> monkies = [];
-  int rounds = 1000;
+  int rounds = 10000;
+  int modulus = 1;
 
   getMonkeyProperties(item) {
     List<String> properties = item.split(RegExp("\n"));
@@ -21,11 +22,11 @@ decypher() {
     // print(properties);
   }
 
-  int relief(value) {
-    int number = value ~/ 3;
-    print(number);
-    return number;
-  }
+  // int relief(value) {
+  //   int number = value ~/ 3;
+  //   print(number);
+  //   return number;
+  // }
 
   bool tossToMonkey(value, testNumber) {
     bool ab;
@@ -68,6 +69,7 @@ decypher() {
     monkies.add(monkeyModel);
   }
 
+  // ignore: unused_element
   removeUsedValues(monkey, number) {
     monkies[monkey].items.removeRange(0, number);
   }
@@ -85,12 +87,12 @@ decypher() {
       //add to new monkeylist
       // oldWorry = relief(oldWorry);
       if (tossToMonkey(oldWorry, monkies[number].test) == true) {
-        monkies[monkies[number].ifTrue].items.add(oldWorry);
+        monkies[monkies[number].ifTrue].items.add(oldWorry % modulus);
         print('toss Monkey = true.  Toss To ${monkies[number].ifTrue}');
       }
 
       if (tossToMonkey(oldWorry, monkies[number].test) == false) {
-        monkies[monkies[number].ifFalse].items.add(oldWorry);
+        monkies[monkies[number].ifFalse].items.add(oldWorry % modulus);
         print('toss Monkey = false. Toss To ${monkies[number].ifFalse}');
       }
     }
@@ -121,6 +123,10 @@ decypher() {
   for (int i = 0; i <= monkeyHold.length - 1; i++) {
     parseMonkeyData(monkeyHold[i], i);
   }
+  for (int i = 0; i <= monkies.length - 1; i++) {
+    modulus = modulus * monkies[i].test;
+  }
+
   for (int repeat = 0; repeat <= rounds - 1; repeat++) {
     for (int m = 0; m <= monkies.length - 1; m++) {
       calculateRound(m);
